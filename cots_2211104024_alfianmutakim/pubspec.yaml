@@ -35,3 +35,17 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/images/onboarding1.png
+    - assets/images/onboarding2.png
+    - assets/images/onboarding3.png
+    - assets/images/gojek.png
+    - assets/icons/gopulsa.png
+    - assets/icons/goride.png
+    - assets/icons/gocar.png
+    - assets/icons/gofood.png
+    - assets/icons/gosend.png
+    - assets/icons/gomart.png
+    - assets/icons/goclub.png
+    - assets/images/vektor1.png
+    - assets/images/vektor2.png
+    - assets/images/vektor3.png

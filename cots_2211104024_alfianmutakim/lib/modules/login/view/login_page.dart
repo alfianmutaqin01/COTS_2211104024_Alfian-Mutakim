@@ -7,127 +7,152 @@ import '../controller/login_controller.dart';
 class LoginPage extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
-    final LoginController controller = Get.put(LoginController());
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.greyLight,
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Header dengan logo
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment
+                .spaceBetween, // Memisahkan elemen atas dan tombol bawah
+            children: [
+              // Bagian atas: Header, teks, dan form
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  GestureDetector(
-                    onTap: () => Get.back(),
-                    child: Icon(Icons.arrow_back, color: AppColors.black),
-                  ),
-                  Image.asset('assets/images/gojek.png', width: 100),
-                  Icon(Icons.help_outline, color: AppColors.black),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Form login
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      'Login',
-                      style: AppTypography.h1,
-                      textAlign: TextAlign.start,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Enter your registered phone number to log in',
-                      style: AppTypography.subhead2.copyWith(
-                        color: AppColors.greyMedium,
-                      ),
-                      textAlign: TextAlign.start,
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Input nomor telepon
-                    TextField(
-                      keyboardType: TextInputType.phone,
-                      onChanged: (value) => controller.phoneNumber.value = value,
-                      decoration: InputDecoration(
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            '+62',
-                            style: AppTypography.bodyText,
-                          ),
+                  // Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Image.asset(
+                          './../../../assets/icons/back.png',
+                          width: 24,
+                          height: 24,
                         ),
-                        labelText: 'Phone number',
-                        border: OutlineInputBorder(),
-                        suffixIcon: Obx(() => controller.phoneNumber.value.isEmpty
-                            ? null
-                            : IconButton(
-                                icon: Icon(Icons.clear),
-                                onPressed: () => controller.phoneNumber.value = '',
-                              )),
+                        onPressed: () => Get.back(),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Issue with number link
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton(
+                      Image.asset(
+                        '../../../../assets/images/gojek.png',
+                        width: 90,
+                      ),
+                      Spacer(),
+                      IconButton(
+                        icon: Image.asset(
+                          './../../../assets/icons/tanya.png',
+                          width: 24,
+                          height: 24,
+                        ),
                         onPressed: () {
                           // Navigasi ke halaman bantuan
                         },
-                        child: Text(
-                          'Issue with number?',
-                          style: AppTypography.bodyText.copyWith(
-                            color: AppColors.primaryBlue,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  // Teks Header
+                  Text(
+                    'Login',
+                    style: AppTypography.h1.copyWith(color: AppColors.black),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Enter your registered phone number to log in',
+                    style: AppTypography.bodyText
+                        .copyWith(color: AppColors.greyMedium),
+                  ),
+                  const SizedBox(height: 24),
+                  // Input Nomor Telepon
+                  TextField(
+                    keyboardType: TextInputType.phone,
+                    onChanged: (value) => controller.phoneNumber.value = value,
+                    decoration: InputDecoration(
+                      prefixIcon: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 3, vertical: 0),
+                        decoration: BoxDecoration(
+                          color: AppColors.greyLight,
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(
+                            color: AppColors.greyMedium,
+                            width: 1.0,
                           ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(
+                              '../../../../assets/icons/indonesia.png',
+                              width: 24,
+                              height: 24,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '+62',
+                              style: AppTypography.bodyText
+                                  .copyWith(fontWeight: FontWeight.w600),
+                            ),
+                          ],
                         ),
                       ),
+                      prefixIconConstraints:
+                          const BoxConstraints(minWidth: 80, minHeight: 48),
+                      labelText: 'Phone number',
+                      suffixIcon: controller.phoneNumber.value.isEmpty
+                          ? null
+                          : IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () =>
+                                  controller.phoneNumber.value = '',
+                            ),
                     ),
-                    const SizedBox(height: 24),
-
-                    // Tombol login
-                    Obx(() {
-                      return ElevatedButton(
-                        onPressed: controller.isLoading.value
-                            ? null
-                            : () => controller.login(),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryGreen,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 14.0),
-                        ),
-                        child: controller.isLoading.value
-                            ? CircularProgressIndicator(
-                                color: AppColors.white,
-                              )
-                            : Text(
-                                'Continue',
-                                style: AppTypography.bodyText.copyWith(
-                                  color: AppColors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                      );
-                    }),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 2),
+                  // Link untuk masalah nomor
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: () {
+                        // Navigasi ke halaman "Issue with number?"
+                      },
+                      child: Text(
+                        'Issue with number?',
+                        style: AppTypography.bodyText
+                            .copyWith(color: AppColors.primaryGreen),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-
-            // Keyboard visual padding
-            const SizedBox(height: 16),
-          ],
+              // Tombol di bawah
+              Obx(() {
+                return SizedBox(
+                  width: double
+                      .infinity, // Tombol akan memenuhi lebar maksimum yang tersedia
+                  child: ElevatedButton(
+                    onPressed: controller.phoneNumber.value.isEmpty
+                        ? null
+                        : () => controller.login(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryGreen,
+                      padding: const EdgeInsets.symmetric(vertical: 14.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: controller.isLoading.value
+                        ? const CircularProgressIndicator(
+                            color: AppColors.white)
+                        : Text(
+                            'Continue',
+                            style: AppTypography.h4
+                                .copyWith(color: AppColors.white),
+                          ),
+                  ),
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
