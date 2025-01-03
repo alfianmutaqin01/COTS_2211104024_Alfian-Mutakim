@@ -196,19 +196,19 @@ class MainPage extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: const [
         BottomNavigationBarItem(
-          icon: ImageIcon(AssetImage("assets/icons/home.png")),
+          icon: ImageIcon(AssetImage("../../../../assets/icons/home.png")),
           label: "Home",
         ),
         BottomNavigationBarItem(
-          icon: ImageIcon(AssetImage("assets/icons/promosi.png")),
+          icon: ImageIcon(AssetImage("../../../../assets/icons/promosi.png")),
           label: "Payments",
         ),
         BottomNavigationBarItem(
-          icon: ImageIcon(AssetImage("assets/icons/order.png")),
+          icon: ImageIcon(AssetImage("../../../../assets/icons/order.png")),
           label: "Offers",
         ),
         BottomNavigationBarItem(
-          icon: ImageIcon(AssetImage("assets/icons/pesan.png")),
+          icon: ImageIcon(AssetImage("../../../../assets/icons/pesan.png")),
           label: "Chat",
         ),
       ],
