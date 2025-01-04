@@ -18,34 +18,96 @@ class MainPage extends StatelessWidget {
     return AppBar(
       backgroundColor: AppColors.white,
       elevation: 0,
-      title: TextField(
-        decoration: InputDecoration(
-          hintText: "Find services, food, or places",
-          hintStyle:
-              AppTypography.subhead2.copyWith(color: AppColors.greyMedium),
-          prefixIcon: const Icon(Icons.search, color: AppColors.greyMedium),
-          filled: true,
-          fillColor: AppColors.greyLight,
-          contentPadding: const EdgeInsets.symmetric(vertical: 0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide.none,
+      title: Row(
+        children: [
+          // Kolom pencarian
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.greyLight,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 4,
+                    offset: Offset(0, 2), // Posisi bayangan
+                  ),
+                ],
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Find services, food, or places",
+                  hintStyle: AppTypography.subhead2
+                      .copyWith(color: AppColors.greyMedium),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset('../../../assets/icons/cari.png',
+                        width: 20, height: 20), // Ikon pencarian
+                  ),
+                  filled: true,
+                  fillColor: AppColors.greyLight,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
+          const SizedBox(width: 10), // Spasi antara pencarian dan ikon
+
+          // Ikon tambahan dengan bayangan
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset: Offset(0, 2), // Posisi bayangan
+                ),
+              ],
+            ),
+            child: Image.asset('assets/icons/profile.png',
+                width: 50, height: 50), // Ikon profile
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildBody() {
-    return ListView(
-      padding: const EdgeInsets.all(16.0),
-      children: [
-        _buildGopaySection(),
-        const SizedBox(height: 20),
-        _buildServicesSection(),
-        const SizedBox(height: 20),
-        _buildPromosSection(),
-      ],
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return ListView(
+          padding: const EdgeInsets.all(
+              0), // Hilangkan padding agar gambar memenuhi lebar layar
+          children: [
+            const SizedBox(height: 20), // Jarak setelah gambar
+            _buildGopaySection(),
+            const SizedBox(height: 20),
+            _buildServicesSection(),
+            const SizedBox(height: 20),
+            _buildPromosSection(),
+            const SizedBox(height: 20),
+            ClipRect(
+              child: Align(
+                alignment: Alignment.topCenter,
+                heightFactor: 0.5, // Menentukan bagian gambar yang ditampilkan
+                child: Image.asset(
+                  '../../../../assets/images/background.png',
+                  fit: BoxFit.cover,
+                  width: constraints.maxWidth, // Lebar sesuai ukuran layar
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -53,44 +115,80 @@ class MainPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 3, 107, 131), // Gopay blue color
+        color: const Color.fromARGB(255, 3, 107, 131), // Warna biru khas GoPay
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Column(
+      child: Row(
+        crossAxisAlignment:
+            CrossAxisAlignment.center, // Pusatkan elemen secara vertikal
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
+          // Kolom 1: Logo GoPay, Saldo, dan "Tap for history" (Lebar 1:3, Background putih)
+          Expanded(
+            flex: 1, // Kolom pertama mengambil 1/3 dari lebar container
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white, // Background putih
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Rp 7.434", // Perubahan nilai Rp
-                      style: AppTypography.h2.copyWith(color: AppColors.white)),
-                  Text("Tap for history", // Perubahan teks
-                      style: AppTypography.subhead3
-                          .copyWith(color: AppColors.white.withOpacity(0.7))),
+                  // Logo GoPay
+                  Image.asset(
+                    'assets/images/gopay.png', // Path logo GoPay
+                    height: 20, // Tinggi logo
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 5), // Spasi antar elemen
+                  // Saldo
+                  Text(
+                    "Rp7.434",
+                    style: AppTypography.h2.copyWith(
+                      color: Colors.black, // Teks hitam
+                    ),
+                  ),
+                  const SizedBox(height: 5), // Spasi antar elemen
+                  // "Tap for history"
+                  Text(
+                    "Tap for history",
+                    style: AppTypography.h5.copyWith(
+                      color: AppColors.greenDark,
+                    ),
+                  ),
                 ],
               ),
-              const Icon(Icons.qr_code, color: AppColors.white),
-            ],
+            ),
           ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              _GopayIcon(
-                image: '../../../../assets/icons/topup.png',
-                label: "Top Up",
+          const SizedBox(width: 16), // Spasi antara kolom pertama dan kedua
+
+          // Kolom 2: Ikon "Top Up", "Pay", dan "Explore" (Lebar sisa 2:3)
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 12), // Tambahkan padding vertikal
+              child: Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.spaceEvenly, // Spasi antar ikon
+                crossAxisAlignment:
+                    CrossAxisAlignment.center, // Pusatkan elemen vertikal
+                children: const [
+                  _GopayIcon(
+                    image: '../../../../assets/icons/topup.png',
+                    label: "Top Up",
+                  ),
+                  _GopayIcon(
+                    image: '../../../../assets/icons/pay.png',
+                    label: "Pay",
+                  ),
+                  _GopayIcon(
+                    image: '../../../../assets/icons/explore.png',
+                    label: "Explore",
+                  ),
+                ],
               ),
-              _GopayIcon(
-                image: '../../../../assets/icons/pay.png',
-                label: "Pay",
-              ),
-              _GopayIcon(
-                image: '../../../../assets/icons/explore.png',
-                label: "Explore",
-              ),
-            ],
+            ),
           ),
         ],
       ),
@@ -138,54 +236,29 @@ class MainPage extends StatelessWidget {
 
   Widget _buildPromosSection() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start, // Align to the start
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          // Added padding for the "Restos near me" text
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text("121 XP to your next Treasure",
               style:
                   AppTypography.subhead3.copyWith(color: AppColors.greyMedium)),
         ),
         const SizedBox(height: 10),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(8), // Reduced border radius
-          ),
-          child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Restos near me", style: AppTypography.h4),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                    color: AppColors.greyMedium,
-                  ), // Added arrow icon
-                ],
-              )),
-        ),
-        const SizedBox(height: 10),
         const _PromoCard(
-          imageUrl: '../../../../assets/images/vektor1.png',
+          imageUrl: 'assets/images/vektor1.png',
           title: "Makin Seru",
-          description:
-              "Aktifkan & Sambungkan GoPay & GoPayLater di Tokopedia", // Perubahan teks
+          description: "Aktifkan & Sambungkan GoPay & GoPayLater di Tokopedia",
         ),
         const _PromoCard(
-          imageUrl: '../../../../assets/images/vektor2.png',
+          imageUrl: 'assets/images/vektor2.png',
           title: "Makin Seru",
-          description:
-              "Sambungkan Akun ke Tokopedia, Banyakin Untung", // Perubahan teks
+          description: "Sambungkan Akun ke Tokopedia, Banyakin Untung",
         ),
         const _PromoCard(
-          imageUrl: '../../../../assets/images/vektor3.png',
+          imageUrl: 'assets/images/vektor3.png',
           title: "Bayar Apa Aja",
-          description:
-              "Promo Belanja Online 10.10: Cashback hingga Rp150.000", // Perubahan teks
+          description: "Promo Belanja Online 10.10: Cashback hingga Rp150.000",
         ),
       ],
     );
@@ -196,19 +269,19 @@ class MainPage extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: const [
         BottomNavigationBarItem(
-          icon: ImageIcon(AssetImage("../../../../assets/icons/home.png")),
+          icon: ImageIcon(AssetImage("assets/icons/home.png")),
           label: "Home",
         ),
         BottomNavigationBarItem(
-          icon: ImageIcon(AssetImage("../../../../assets/icons/promosi.png")),
-          label: "Payments",
+          icon: ImageIcon(AssetImage("assets/icons/promosi.png")),
+          label: "Promosi",
         ),
         BottomNavigationBarItem(
-          icon: ImageIcon(AssetImage("../../../../assets/icons/order.png")),
-          label: "Offers",
+          icon: ImageIcon(AssetImage("assets/icons/order.png")),
+          label: "Orders",
         ),
         BottomNavigationBarItem(
-          icon: ImageIcon(AssetImage("../../../../assets/icons/pesan.png")),
+          icon: ImageIcon(AssetImage("assets/icons/pesan.png")),
           label: "Chat",
         ),
       ],
@@ -267,25 +340,38 @@ class _PromoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Row(
+      margin: const EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
             imageUrl,
-            height: 80,
-            width: 80,
+            height: 230,
+            width: double.infinity,
             fit: BoxFit.cover,
           ),
-          const SizedBox(width: 10),
-          Expanded(
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment
+                  .start, // Menambahkan ini untuk memastikan posisi Column juga rata kiri
               children: [
-                Text(title, style: AppTypography.h5),
-                Text(description, style: AppTypography.paragraph2),
+                Text(
+                  title,
+                  style: AppTypography.h3,
+                  textAlign: TextAlign.left,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  description,
+                  style: AppTypography.paragraph2,
+                  textAlign: TextAlign.left,
+                ),
               ],
             ),
           ),
+          const SizedBox(height: 10),
         ],
       ),
     );
